@@ -5,13 +5,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Comprobante SIAT</title>
   <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
     :root {
       --bg-color: #f4f6f9;
       --text-color: #000;
       --box-color: #fff;
       --btn-color: #143061;
-      --siat-size: 3rem;
-      --siat-font: 'Bahnschrift SemiLight', sans-serif;
     }
 
     body.dark-mode {
@@ -25,12 +29,12 @@
       font-family: "Poppins", Arial, sans-serif;
       background-color: var(--bg-color);
       color: var(--text-color);
-      margin: 0;
-      padding: 0;
-      transition: 0.3s;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
     }
 
-    /* ENCABEZADO */
+    /* HEADER */
     .header {
       background-color: var(--btn-color);
       color: white;
@@ -38,13 +42,12 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+      width: 100%;
     }
 
     .header-title {
       display: flex;
       align-items: center;
-      font-weight: bold;
-      letter-spacing: 0.5px;
     }
 
     .header-title img {
@@ -52,7 +55,6 @@
       margin-right: 10px;
     }
 
-    /* 🔹 OCULTAMOS EL TEXTO SIAT */
     .siat-text {
       display: none;
     }
@@ -66,89 +68,88 @@
       filter: brightness(0) invert(1);
     }
 
-    /* TÍTULO FUERA DEL CUADRO */
+    /* TÍTULO CENTRADO */
     .titulo-principal {
       text-align: center;
       font-size: 1.3rem;
       font-weight: 600;
       color: var(--btn-color);
-      margin-top: 25px;
+      margin: 30px 0 20px 0;
     }
 
-    /* CONTENEDOR PRINCIPAL - MÁS ALARGADO Y MENOS ANCHO */
+    /* CONTENEDOR CENTRADO - ESTILO COMO EN LA FOTO */
+    .contenedor-centrado {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      padding: 20px;
+    }
+
     .container {
-      width: 300px; /* Reducido el ancho */
-      margin: 25px auto;
+      width: 100%;
+      max-width: 360px;
       background-color: var(--box-color);
-      padding: 20px 25px;
-      border-radius: 28px;
-      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
-      border: 1px solid #d9d9d9;
+      padding: 20px 24px;
+      border-radius: 20px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+      border: 1px solid #e0e0e0;
     }
 
+    /* LÍNEA SEPARADORA */
     .separator {
-      border-top: 1px solid #d5d5d5;
-      margin: 8px 0 14px 0;
+      border-top: 1px solid #ddd;
+      margin: 5px 0 15px 0;
     }
 
-    .datos-secundarios h3 {
-      font-weight: 500;
-      text-align: left;
-      font-size: 1.05rem;
-      color: #555;
-      margin-bottom: 14px;
+    /* TÍTULO DATOS DEL COMPROBANTE */
+    .datos-titulo {
+      font-weight: 600;
+      font-size: 1rem;
+      margin-bottom: 16px;
+      color: var(--text-color);
     }
 
-    /* LISTA DE DATOS */
+    /* CADA DATO */
     .dato {
       display: flex;
-      align-items: center;
-      margin: 14px 0;
-    }
-
-    .icono {
-      width: 45px;
-      height: 45px;
-      margin-right: 12px;
-      object-fit: contain;
-    }
-
-    .dato-texto {
-      display: flex;
-      flex-direction: column;
-      line-height: 1.3;
+      margin-bottom: 14px;
+      line-height: 1.4;
     }
 
     .dato-label {
-      font-weight: 600;
+      width: 140px;
+      font-weight: 500;
       font-size: 0.9rem;
-      color: #2d2d2d;
+      color: var(--text-color);
+      opacity: 0.75;
     }
 
     .dato-value {
-      font-weight: 400;
-      font-size: 0.95rem;
-      color: #555;
+      flex: 1;
+      font-weight: 500;
+      font-size: 0.9rem;
+      color: var(--text-color);
+      word-break: break-word;
     }
 
-    /* BOTÓN MÁS DELGADO */
+    /* BOTÓN */
     .btn {
       background-color: var(--btn-color);
       color: white;
       border: none;
-      padding: 10px 14px;
+      padding: 12px;
       width: 100%;
-      border-radius: 12px;
-      font-size: 0.95rem;
+      border-radius: 30px;
+      font-size: 0.85rem;
       font-weight: 600;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      margin-top: 18px;
-      transition: background 0.2s ease;
-      height: auto;
-      min-height: 40px;
+      gap: 8px;
+      margin-top: 20px;
+      letter-spacing: 0.5px;
     }
 
     .btn:hover {
@@ -156,26 +157,28 @@
     }
 
     .btn img {
-      width: 18px;
-      height: 18px;
-      margin-right: 8px;
+      width: 16px;
+      height: 16px;
     }
 
-    @media (max-width: 500px) {
+    /* RESPONSIVE */
+    @media (max-width: 450px) {
       .container {
-        margin: 15px;
-        width: 85%;
-        max-width: 340px;
+        max-width: 320px;
+        padding: 16px 18px;
       }
-      .header-title img {
-        height: 50px;
+      .dato-label {
+        width: 120px;
+        font-size: 0.85rem;
+      }
+      .dato-value {
+        font-size: 0.85rem;
       }
     }
   </style>
 </head>
 <body>
 
-  <!-- ENCABEZADO -->
   <div class="header">
     <div class="header-title">
       <img src="logotipo.jpeg" alt="SIAT" />
@@ -184,77 +187,53 @@
     <button class="toggle-mode" onclick="toggleDarkMode()">🌛</button>
   </div>
 
-  <!-- TÍTULO FUERA DEL CUADRO -->
   <div class="titulo-principal">Datos del Comprobante QR</div>
 
-  <!-- CONTENEDOR DE DATOS - MÁS ALARGADO Y MENOS ANCHO -->
-  <div class="container" id="comprobante">
-    <div class="separator"></div>
+  <div class="contenedor-centrado">
+    <div class="container">
+      <div class="separator"></div>
+      <div class="datos-titulo">Datos del Comprobante</div>
 
-    <div class="datos-secundarios">
-      <h3>Datos del Comprobante</h3>
-    </div>
-
-    <div class="dato">
-      <img src="usuario.jpeg" class="icono" alt="Razón social" />
-      <div class="dato-texto">
+      <div class="dato">
         <div class="dato-label">Razón Social</div>
         <div class="dato-value">ENCARNA PACO VDA. DE JULIAN</div>
       </div>
-    </div>
 
-    <div class="dato">
-      <img src="papel.jpeg" class="icono" alt="NIT" />
-      <div class="dato-texto">
+      <div class="dato">
         <div class="dato-label">NIT</div>
         <div class="dato-value">2591552018</div>
       </div>
-    </div>
 
-    <div class="dato">
-      <img src="pantallau.jpeg" class="icono" alt="Trámite" />
-      <div class="dato-texto">
+      <div class="dato">
         <div class="dato-label">Número de Trámite</div>
         <div class="dato-value">—</div>
       </div>
-    </div>
 
-    <div class="dato">
-      <img src="moneda.jpeg" class="icono" alt="Monto" />
-      <div class="dato-texto">
+      <div class="dato">
         <div class="dato-label">Monto Total Bs.</div>
         <div class="dato-value">906</div>
       </div>
-    </div>
 
-    <div class="dato">
-      <img src="dolar.jpeg" class="icono" alt="Monto Sus" />
-      <div class="dato-texto">
+      <div class="dato">
         <div class="dato-label">Monto Total Sus.</div>
         <div class="dato-value">0</div>
       </div>
-    </div>
 
-    <div class="dato">
-      <img src="maleta.jpeg" class="icono" alt="Fecha" />
-      <div class="dato-texto">
+      <div class="dato">
         <div class="dato-label">Fecha Pago</div>
         <div class="dato-value">12/11/2025</div>
       </div>
-    </div>
 
-    <div class="dato">
-      <img src="carne.jpeg" class="icono" alt="Estado" />
-      <div class="dato-texto">
+      <div class="dato">
         <div class="dato-label">Estado</div>
         <div class="dato-value">PAGADO</div>
       </div>
-    </div>
 
-    <button class="btn" onclick="abrirPDF()">
-      <img src="impresora.jpg" alt="Imprimir" />
-      IMPRIMIR COMPROBANTE PAGO
-    </button>
+      <button class="btn" onclick="abrirPDF()">
+        <img src="impresora.jpg" alt="Imprimir" />
+        IMPRIMIR COMPROBANTE PAGO
+      </button>
+    </div>
   </div>
 
   <script>
